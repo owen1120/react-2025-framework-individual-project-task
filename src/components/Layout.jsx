@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom'; // 使用 NavLink 來處理選單啟動狀態
 import CartModal from './CartModal';
 
+import footer from '../assets/footer.jpg';
+
 function Layout({ children, cart, removeFromCart }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -25,7 +27,7 @@ function Layout({ children, cart, removeFromCart }) {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-5">
                         <li className="nav-item">
                             <NavLink className="nav-link px-3" to="">Product</NavLink>
                         </li>
@@ -53,28 +55,35 @@ function Layout({ children, cart, removeFromCart }) {
         </main>
 
         {/* --- Footer 區域 --- */}
-        <footer className="footer bg-dark text-white py-4 mt-auto">
+        <footer className="footer text-white mt-auto">
+            <div className="img-box">
+                <img src={footer} alt="footer" className="footer-desktop-bg-img" />
+            </div>
             <div className="container">
-                <div className="row align-items-center">
-                    <div className="text-centermb-3 mb-md-0">
-                        <p className="fs-2 fw-bold text-white">Subscribe for news and special offers!</p>
+                <div className="footer-content-top">
+                    <img src={footer} alt="footer" className="footer-mobile-bg-img" />
+                    <div className="content">
+                        <p className="footer-title fw-bold text-white">Subscribe for news<br />and special offers!</p>
                         <div className="input-group custom-subscribe-group">
                             <input type="email" className="form-control" placeholder="Your email address" aria-label="Your email address" 
-                            />
-                            <button className="btn btn-success" type="submit">
+                                />
+                            <button className="btn fw-bold" type="submit">
                                 Subscribe
                             </button>
                         </div>
                     </div>
-                    <div className="text-center">
-                        <h5 className="fs-3 fw-bold fst-italic mb-5">Craftsman</h5>
-                        <ul className="list-inline d-flex mb-0">
-                            <li className="list-inline-item"><a href="#" className="text-decoration-none">Purchase Policy</a></li>
-                            <li className="list-inline-item mx-3"><a href="#" className="text-decoration-none">Privacy Policy</a></li>
-                            <li className="list-inline-item"><a href="#" className="text-decoration-none">Terms & Conditions</a></li>
-                        </ul>
-                        <p className="small text-white-50 mt-2 mb-0">© 2025 Biscuit Krueger.</p>
+                </div>
+                <div className="text-content">
+                    <div className="brand-container">
+                        <h5 className="footer-brand fs-3 fw-bold fst-italic">Craftsman</h5>
+                        <p className="small text-white-50 desktop-copyright">© 2020. All Rights Reserved.</p>
                     </div>
+                    <ul className="footer-list">
+                        <li className="list-item"><a href="#" className="list-link text-decoration-none">Purchase Policy</a></li>
+                        <li className="list-item"><a href="#" className="list-link text-decoration-none">Privacy Policy</a></li>
+                        <li className="list-item"><a href="#" className="list-link text-decoration-none">Terms & Conditions</a></li>
+                    </ul>
+                    <p className="small text-white-50 mobile-copyright">© 2020. All Rights Reserved.</p>
                 </div>
             </div>
         </footer>
