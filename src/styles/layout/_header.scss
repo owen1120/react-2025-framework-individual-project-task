@@ -1,0 +1,41 @@
+.header {
+    background-color: #000;
+    .container {
+        flex-direction: row-reverse;
+        .navbar-brand{
+            color: #fff;
+        }
+        .navbar-toggler, .btn {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .desktop-cart {
+            display: none;
+        }
+    }
+}
+
+@include media-breakpoint-up(lg){
+    .header {
+        background-color: transparent;
+        .container {
+            flex-direction: row;
+            .navbar-brand{
+                color: #000;
+            }
+            .navbar-toggler, .mobile-cart {
+                display: none;
+            }
+            .desktop-cart {
+                display: block;
+                .btn {
+                    color: #000;
+                }
+            }
+        }
+    }
+}
