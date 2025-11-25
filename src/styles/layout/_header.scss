@@ -16,6 +16,52 @@
         .desktop-cart {
             display: none;
         }
+        .offcanvas {
+            .offcanvas-header {
+                display: flex;
+                justify-content: space-between;
+                .btn {
+                    color: #000;
+                }
+            }
+            .offcanvas-body {
+                .nav-item {
+                    width: 100%;
+                    padding: 0;
+                }
+                .nav-link {
+                    width: 100%;
+                    font-size: 1.5rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .desktop-navlink {
+                    display: none;
+                }
+                .divider {
+                    width: 100%;
+                    border-bottom: 1px solid #00000062;
+                }
+                .dropdown-menu {
+                    display: flex;
+                    flex-direction: column;
+                    gap: .5rem;
+                    border: none;
+                    border-top: 1px solid #00000062;
+                    border-radius: 0;
+                }
+                .dropdown-item {
+                    display: flex;
+                    color: #0000009a;
+                    font-size: 1rem;
+                    padding: 0;
+                    .qty {
+                        font-size: .5rem;
+                    }
+                }
+            }
+        }
     }
 }
 
