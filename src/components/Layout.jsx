@@ -24,7 +24,7 @@ function Layout({ children, cart, removeFromCart }) {
     <div className="d-flex flex-column min-vh-100">
       
       {/* --- Header 區域 --- */}
-      <nav className="header navbar navbar-expand-lg navbar-light sticky-top">
+      <nav className="header navbar navbar-expand-lg navbar-light position-absolute w-100 top-0 z-3">
         <div className="container">
           
           {/* 購物車按鈕 (Mobile) */}

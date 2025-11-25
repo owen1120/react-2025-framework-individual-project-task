@@ -34,8 +34,8 @@ function HomePage() {
               <div className="text-content">
                 <h3 className="card-title">Special Clays</h3>
                 <p className="card-desc">A general body formulation for contemporary earthenware is 25% kaolin, 25% ball clay, 35% quartz and 15% feldspar.</p>
+                <a href="#" className="more">Learn More</a>
               </div>
-              <a href="#" className="more">Learn More</a>
             </div>
           </li>
           <li className="card card-2">
@@ -46,8 +46,8 @@ function HomePage() {
               <div className="text-content">
                 <h3 className="card-title">Less is more</h3>
                 <p className="card-desc">Trimming pottery can transform a weighty Earth-bound pot into one that is a pleasure to hold, look at, and use.</p>
+                <a href="#" className="more">Learn More</a>
               </div>
-              <a href="#" className="more">Learn More</a>
             </div>
           </li>
           <li className="card card-3">
@@ -58,8 +58,8 @@ function HomePage() {
               <div className="text-content">
                 <h3 className="card-title">Marvelous Detail</h3>
                 <p className="card-desc">In Craftsman, the art director, working with marketers, develops or creates an idea of a new creation.</p>
+                <a href="#" className="more">Learn More</a>
               </div>
-              <a href="#" className="more">Learn More</a>
             </div>
           </li>
         </ul>
@@ -78,6 +78,41 @@ function HomePage() {
             </ul>
           </div>
         </div>
+      </section>
+
+      <section className="products container">
+        <ul className="cards-group">
+          <li className="cards">
+            <a href="#" className="card-item">
+              <div className="card-imgs">
+                <img src="https://github.com/hexschool/webLayoutTraining1st/blob/master/week6/img-1.jpg?raw=true" alt="Tatami Cup" className="card-img" />
+                <span className="tag">On Sale</span>
+              </div>
+              <div className="card-content">
+                <h4 className="name">Tatami Cup</h4>
+                <div className="prices">
+                  <p className="price">NT$1080</p>
+                  <p className="originPrice">NT$1200</p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li className="cards">
+            <a href="#" className="card-item">
+              <div className="card-imgs">
+                <img src="https://github.com/hexschool/webLayoutTraining1st/blob/master/week6/img-1.jpg?raw=true" alt="Tatami Cup" className="card-img" />
+                <span className="tag">On Sale</span>
+              </div>
+              <div className="card-content">
+                <h4 className="name">Tatami Cup</h4>
+                <div className="prices">
+                  <p className="price">NT$1080</p>
+                  <p className="originPrice">NT$1200</p>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
       </section>
 
     </div>
