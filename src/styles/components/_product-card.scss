@@ -1,0 +1,89 @@
+.product-card {
+  position: relative;
+  text-align: left;
+  
+  .card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: .5rem; 
+    cursor: pointer;
+    
+    @include media-breakpoint-down(lg) {
+      aspect-ratio: 1 / 1;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s ease;
+      
+      @include media-breakpoint-down(lg) {
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  .on-sale-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: .5rem;
+    color: white;
+    font-size: .875rem;
+    line-height: 1.5;
+    font-weight: bold;
+    z-index: 2;
+    text-shadow: 0 0 2px rgba(0,0,0,0.3);
+
+    @include media-breakpoint-up(lg) {
+      margin: 1rem;
+    }
+  }
+
+  .card-content {
+    .card-title {
+      color: #121212;
+      font-size: 1.25rem;
+      font-weight: bold;
+      line-height: 1.8;
+      margin-bottom: 0.25rem;
+
+      @include media-breakpoint-up(lg) {
+        font-size: 1.5rem;
+        line-height: 1.5;
+      }
+    }
+
+    .price-group {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      
+      .current-price {
+        color: #121212;
+        font-size: .875rem;
+        line-height: 1.5;
+
+        @include media-breakpoint-up(lg) {
+          font-size: 1rem;
+        }
+      }
+      
+      .origin-price {
+        color: #00000062;
+        font-size: 0.875em;
+        line-height: 1.5;
+        text-decoration: line-through;
+
+        @include media-breakpoint-up(lg) {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

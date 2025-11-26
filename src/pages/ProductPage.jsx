@@ -1,73 +1,157 @@
 import { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import Masonry from 'react-masonry-css';
+import ProductCard from '../components/ProductCard';
 
 function ProductPage({ addToCart }) {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filterType, setFilterType] = useState('All');
-  const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
   useEffect(() => {
-    // 這是你的 API
-    fetch('https://raw.githubusercontent.com/hexschool/js-training/refs/heads/main/craftsman.json')
-      .then(res => res.json())
-      .then(data => {
-        setProducts(data); // 假設 API 回傳的是陣列
-        setLoading(false);
-      })
-      .catch(err => console.error("寶石上有雜質（API Error）:", err));
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerPage(8);
+      } else {
+        setItemsPerPage(12);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 使用 useMemo 優化篩選效能，這是『練』的體現
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get('https://raw.githubusercontent.com/hexschool/js-training/refs/heads/main/craftsman.json');
+        setProducts(res.data.products || []);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("API Error:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const breakpointColumnsObj = {
+    default: 3,
+    992: 3,
+    768: 2,
+    576: 2
+  };
+
+  const categoryCounts = useMemo(() => {
+    const counts = { All: products.length };
+    products.forEach(p => {
+      if (!counts[p.category]) {
+        counts[p.category] = 0;
+      }
+      counts[p.category]++;
+    });
+    return counts;
+  }, [products]);
+
+  const categories = ['All', 'Cup', 'Plate', 'Bowl', 'Vase'];
+
   const filteredProducts = useMemo(() => {
     if (filterType === 'All') return products;
-    return products.filter(p => p.category === filterType); // 假設 API 有 category 欄位
+    return products.filter(p => p.category === filterType);
   }, [products, filterType]);
 
-  // 取得所有分類
-  const categories = ['All', ...new Set(products.map(p => p.category))];
+  const handleFilterChange = (category) => {
+    setFilterType(category);
+    setCurrentPage(1);
+  };
 
-  if (loading) return <div className="text-center mt-5">正在鑑定寶石中...</div>;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center py-5" style={{ marginTop: '120px' }}>
+        <div className="spinner-border text-success" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mt-4">
-      {/* 篩選區塊 */}
-      <div className="mb-4">
-        <select 
-          className="form-select w-auto" 
-          value={filterType} 
-          onChange={(e) => setFilterType(e.target.value)}
-        >
-          {categories.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
+    <div className='product-page-wrapper'>
+      
+      <div className="filter-bar">
+        <div className="container">
+          <ul className="list-inline mb-0">
+            {categories.map(cat => (
+              <li className="list-inline-item" key={cat}>
+                <button
+                  className={`filter-btn ${filterType === cat ? 'active' : ''}`}
+                  onClick={() => handleFilterChange(cat)}
+                >
+                  {cat}
+                  <span className="count-badge">
+                    {categoryCounts[cat] || 0}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      {/* 商品列表 - 記得使用 RWD Grid */}
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        {filteredProducts.map(product => (
-          <div className="col" key={product.id}>
-            <div className="card h-100 shadow-sm">
-              {/* 圖片處理：必須自適應 (img-fluid 或 object-fit) */}
-              <img 
-                src={product.images} 
-                className="card-img-top" 
-                alt={product.title} 
-                style={{ height: '200px', objectFit: 'cover' }} 
-              />
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{product.title}</h5>
-                <p className="card-text text-truncate">{product.description}</p>
-                <div className="mt-auto d-flex justify-content-between align-items-center">
-                   <span className="h5 mb-0">NT$ {product.price}</span>
-                   <button 
-                     className="btn btn-primary"
-                     onClick={() => addToCart(product)}
-                   >
-                     加入購物車
-                   </button>
-                </div>
-              </div>
-            </div>
+      <div className="product-wrapper container">
+        {filteredProducts.length === 0 ? (
+          <div className="col-12 text-center text-muted py-5">
+            沒有找到分類為「{filterType}」的商品。
           </div>
-        ))}
+        ) : (
+          <>
+            <Masonry
+              breakpointCols={breakpointColumnsObj}
+              className='my-masonry-grid'
+              columnClassName='my-masonry-grid_column'
+            >
+              {currentItems.map(product => (
+                <div key={product.id} className='card-bottom-gap'>
+                  <ProductCard
+                    product={product}
+                    addToCart={addToCart}
+                  />
+                </div>
+              ))}
+            </Masonry>
+
+            {totalPages > 1 && (
+              <ul className="custom-pagination">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
+                  <li 
+                    key={number} 
+                    className={`page-item ${currentPage === number ? 'active' : ''}`}
+                    onClick={() => paginate(number)}
+                  >
+                    {number}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

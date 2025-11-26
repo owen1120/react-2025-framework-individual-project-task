@@ -1,30 +1,62 @@
-// src/App.jsx
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout'; // 記得確認這個檔案存在！
-import HomePage from './pages/HomePage';   // 記得確認這個檔案存在！
-import ProductPage from './pages/ProductPage'; // 記得確認這個檔案存在！
+import Layout from './components/Layout';
+import HomePage from './pages/Homepage';
+import ProductPage from './pages/ProductPage';
 
 function App() {
-  // --- 這裡是之後要放購物車邏輯的地方，我們先留空或是放簡單狀態 ---
-  const [cart, setCart] = useState([]);
-  const addToCart = () => {};
-  const removeFromCart = () => {};
-  // -------------------------------------------------------------
+  // 初始化購物車 (嘗試從 localStorage 讀取)
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem('craftsmanCart');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // 當 cart 變動時，寫入 localStorage
+  useEffect(() => {
+    localStorage.setItem('craftsmanCart', JSON.stringify(cart));
+  }, [cart]);
+
+  // 加入購物車
+  const addToCart = (product) => {
+    const tempCart = [...cart];
+    const existingItem = tempCart.find(item => item.id === product.id);
+
+    if (existingItem) {
+      existingItem.qty += 1;
+      setCart(tempCart);
+      // alert(`已更新 ${product.name} 數量！`);
+    } else {
+      setCart([...cart, { ...product, qty: 1 }]);
+      // alert(`${product.name} 已加入購物車！`);
+    }
+  };
+
+  // 更新數量
+  const updateCartQty = (id, newQty) => {
+    if (newQty < 1) {
+      removeFromCart(id);
+      return;
+    }
+    const tempCart = cart.map(item => 
+      item.id === id ? { ...item, qty: newQty } : item
+    );
+    setCart(tempCart);
+  }
+
+  // 移除購物車
+  const removeFromCart = (id) => {
+    setCart(cart.filter(item => item.id !== id));
+  };
 
   return (
-    // Layout 包住所有人，這樣導覽列(Navbar)才會一直存在
-    <Layout cart={cart} removeFromCart={removeFromCart}>
-      
-      {/* Routes 決定中間要顯示哪一頁 */}
+    <Layout cart={cart} removeFromCart={removeFromCart} updateCartQty={updateCartQty}>
       <Routes>
-        {/* 當網址是 / 時，顯示首頁 */}
         <Route path="/" element={<HomePage />} />
-        
-        {/* 當網址是 /products 時，顯示商品頁 */}
-        <Route path="/products" element={<ProductPage addToCart={addToCart} />} />
+        <Route 
+          path="/products" 
+          element={<ProductPage addToCart={addToCart} />} 
+        />
       </Routes>
-      
     </Layout>
   );
 }

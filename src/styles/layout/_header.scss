@@ -1,5 +1,6 @@
 .header {
     background-color: #000;
+    transition: background-color 0.3s ease;
     .container {
         flex-direction: row-reverse;
         .navbar-brand{
@@ -63,10 +64,8 @@
             }
         }
     }
-}
-
-@include media-breakpoint-up(lg){
-    .header {
+    
+    @include media-breakpoint-up(lg){
         background-color: transparent;
         .container {
             flex-direction: row;
@@ -101,6 +100,34 @@
                         color: #fff;
                         font-weight: bold;
                     }
+                }
+            }
+        }
+    }
+
+    &.navbar-white-theme {
+        background-color: #fff !important; 
+
+        .container {
+            .navbar-brand {
+                color: #121212 !important;
+            }
+            .navbar-toggler, .btn {
+                color: #121212 !important;
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            background-color: #fff !important; 
+            .container {
+                .navbar-brand {
+                    color: #121212 !important;
+                }
+                .desktop-cart .btn {
+                    color: #121212 !important;
+                }
+                .offcanvas .offcanvas-body .nav-link {
+                    color: #121212 !important;
                 }
             }
         }

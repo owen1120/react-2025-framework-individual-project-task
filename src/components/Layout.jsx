@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import CartModal from './CartModal';
-
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import CartOffcanvas from './CartOffcanvas';
 import footer from '../assets/footer.jpg';
 
-function Layout({ children, cart, removeFromCart }) {
-  const [showModal, setShowModal] = useState(false);
+function Layout({ children, cart, removeFromCart, updateCartQty }) {
+  const [showCart, setShowCart] = useState(false);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const toggleDropdown = (e) => {
     e.preventDefault();
@@ -20,19 +22,32 @@ function Layout({ children, cart, removeFromCart }) {
     alert('訂閱成功！(模擬)');
   };
 
+  // 開啟購物車的函式
+  const handleShowCart = () => setShowCart(true);
+
+  const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+
   return (
     <div className="d-flex flex-column min-vh-100">
       
       {/* --- Header 區域 --- */}
-      <nav className="header navbar navbar-expand-lg navbar-light position-absolute w-100 top-0 z-3">
+      {/* <nav className="header navbar navbar-expand-lg navbar-light position-absolute w-100 top-0 z-3"> */}
+      <nav 
+        className={`header navbar navbar-expand-lg position-absolute w-100 top-0 z-3 
+          ${isHomePage 
+            ? 'navbar-light' 
+            : 'navbar-light navbar-white-theme'
+          }`
+        }
+      >
         <div className="container">
           
           {/* 購物車按鈕 (Mobile) */}
-          <button className="btn mobile-cart position-relative" onClick={() => setShowModal(true)}>
-            <span className="material-symbols-outlined">shopping_cart</span>
-            {cart?.length > 0 && (
+          <button className="btn mobile-cart position-relative" onClick={handleShowCart}>
+            <span className="material-symbols-outlined icon-fill">shopping_cart</span>
+            {totalQty > 0 && (
                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{fontSize: '0.6rem'}}>
-                 {cart.length}
+                 {totalQty}
                </span>
             )}
           </button>
@@ -41,26 +56,24 @@ function Layout({ children, cart, removeFromCart }) {
             Craftsman
           </Link>
           
-          {/* 漢堡選單按鈕 */}
           <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span className="material-symbols-outlined">menu</span>
           </button>
 
-          {/* Offcanvas */}
+          {/* Menu Offcanvas (左側選單) */}
           <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             
             <div className="offcanvas-header">
-              {/* 返回按鈕 */}
               <button type="button" className="btn btn-return" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasNavbar" aria-label="Close">
                 <span className="material-symbols-outlined">arrow_back</span>
               </button>
               
-              {/* 購物車按鈕 (Inside Offcanvas) */}
-              <button className="btn mobile-cart position-relative" onClick={() => setShowModal(true)}>
-                <span className="material-symbols-outlined">shopping_cart</span>
-                {cart?.length > 0 && (
+              {/* 購物車按鈕 (Inside Menu Offcanvas) */}
+              <button className="btn mobile-cart position-relative" onClick={handleShowCart}>
+                <span className="material-symbols-outlined icon-fill">shopping_cart</span>
+                {totalQty > 0 && (
                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{fontSize: '0.6rem'}}>
-                     {cart.length}
+                     {totalQty}
                    </span>
                 )}
               </button>
@@ -88,10 +101,10 @@ function Layout({ children, cart, removeFromCart }) {
                     data-bs-popper="none"
                     style={{ display: isDropdownOpen ? 'block' : 'none' }}
                   >
-                    <li><a href="#" className="dropdown-item">All<small className='qty'>24</small></a></li>
-                    <li><a href="#" className="dropdown-item">Bowl<small className='qty'>10</small></a></li>
-                    <li><a href="#" className="dropdown-item">Cup<small className='qty'>8</small></a></li>
-                    <li><a href="#" className="dropdown-item">Plate<small className='qty'>3</small></a></li>
+                    <li><Link to="/products" className="dropdown-item">All<small className='qty'>24</small></Link></li>
+                    <li><Link to="/products" className="dropdown-item">Bowl<small className='qty'>10</small></Link></li>
+                    <li><Link to="/products" className="dropdown-item">Cup<small className='qty'>8</small></Link></li>
+                    <li><Link to="/products" className="dropdown-item">Plate<small className='qty'>3</small></Link></li>
                     <li><a href="#" className="dropdown-item">Vase<small className='qty'>3</small></a></li>
                   </ul>
                 </li>
@@ -106,11 +119,12 @@ function Layout({ children, cart, removeFromCart }) {
                 </li>
                 <li className='divider'></li>
                 <li className="nav-item desktop-cart ms-lg-3">
-                  <button className="btn position-relative" onClick={() => setShowModal(true)}>
-                    <span className="material-symbols-outlined">shopping_cart</span>
-                    {cart?.length > 0 && (
+                  {/* 購物車按鈕 (Desktop) */}
+                  <button className="btn position-relative" onClick={handleShowCart}>
+                    <span className="material-symbols-outlined icon-fill">shopping_cart</span>
+                    {totalQty > 0 && (
                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{fontSize: '0.6rem'}}>
-                         {cart.length}
+                         {totalQty}
                        </span>
                     )}
                   </button>
@@ -167,12 +181,12 @@ function Layout({ children, cart, removeFromCart }) {
         </div>
       </footer>
 
-      {/* 共用的購物車 Modal */}
-      <CartModal 
-        show={showModal} 
-        handleClose={() => setShowModal(false)} 
+      <CartOffcanvas
+        show={showCart} 
+        handleClose={() => setShowCart(false)} 
         cart={cart}
         removeFromCart={removeFromCart}
+        updateCartQty={updateCartQty}
       />
     </div>
   );

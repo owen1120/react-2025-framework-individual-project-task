@@ -242,10 +242,8 @@
             }
         }
     }
-}
 
-@include media-breakpoint-up(lg){
-    .homepage {
+    @include media-breakpoint-up(lg){
         .heroBanner {
             display: flex;
             flex-direction: row-reverse;
@@ -283,7 +281,7 @@
                 }
             }
         }
-
+        
         .features {
             padding: 4.5rem 0;
             .cards-group {
@@ -309,7 +307,7 @@
                 }
             }
         }
-
+        
         .director .container{
             flex-direction: row;
             align-items: center;
@@ -317,7 +315,7 @@
                 max-width: 350px;
             }
         }
-
+        
         .products {
             padding: 4.5rem 0;
             .cards-group {

@@ -1,0 +1,99 @@
+.product-page-wrapper {
+  margin-top: 106px;
+  
+  .filter-bar {
+    background-color: #f2f2f2;
+    padding: 1rem 0;
+
+    @include media-breakpoint-up(lg) {
+      padding: 1.5rem 0;
+    }
+
+    .list-inline {
+      display: flex;
+      gap: 1.5rem;
+
+      @include media-breakpoint-up(lg) {
+        gap: 2.5rem;
+      }
+
+      .list-inline-item {
+        margin: 0;
+      }
+    }
+  
+    .filter-btn {
+      font-size: 1rem;
+      line-height: 1.25;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
+      color: #0000009a;
+      
+      &:hover {
+        color: #0e8a00 !important;
+      }
+      
+      &.active {
+        color: #0e8a00;
+        font-weight: bold;
+      }
+
+      @include media-breakpoint-up(lg) {
+        font-size: 1.5rem;
+        // font-weight: bold;
+      }
+  
+      .count-badge {
+        font-size: 0.75rem;
+        font-weight: normal;
+        vertical-align: top;
+        margin-left: 0.25rem;
+
+        @include media-breakpoint-up(lg) {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .product-wrapper {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .card-bottom-gap {
+    margin-bottom: 1.5rem;
+
+    @include media-breakpoint-up(lg) {
+      margin-bottom: 3rem;
+    }
+  }
+  
+  .my-masonry-grid {
+    display: flex;
+    margin-left: -30px;
+    width: auto;
+  }
+  
+  .my-masonry-grid_column {
+    padding-left: 30px;
+    background-clip: padding-box;
+  }
+  
+  @include media-breakpoint-down(md) {
+    .my-masonry-grid {
+      margin-left: -8px;
+    }
+    .my-masonry-grid_column {
+      padding-left: 8px;
+    }
+  }
+  
+  @include media-breakpoint-down(md) {
+    margin-top: 60px;
+  }
+}

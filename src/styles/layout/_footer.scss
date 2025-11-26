@@ -63,10 +63,8 @@
             }
         }
     }
-}
 
-@include media-breakpoint-up(lg){
-    .footer {
+    @include media-breakpoint-up(lg){
         .footer-content-top {
             width: 445px;
             height: 400px;
