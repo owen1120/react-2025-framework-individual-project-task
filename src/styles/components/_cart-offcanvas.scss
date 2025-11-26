@@ -8,7 +8,7 @@
 .cart-offcanvas {
   z-index: 1050;
   border: none;
-  width: 400px; 
+  --bs-offcanvas-width: 540px;
   
   @include media-breakpoint-down(sm) {
     width: 100%; 
@@ -17,29 +17,61 @@
   .offcanvas-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+
+    @include media-breakpoint-up(lg) {
+      padding: 3rem;
+      padding-bottom: 1.5rem;
+    }
+
     .offcanvas-title {
       display: flex;
       gap: .25rem;
       font-size: 1.5rem;
+
+      @include media-breakpoint-up(lg) {
+        font-size: 3rem;
+        font-weight: bold;
+      }
+
       .cart-count-qty {
         color: #0e8a00;
         font-size: 1rem;
+
+        @include media-breakpoint-up(lg) {
+          font-size: 1.5rem;
+        }
       }
     }
+    
     .btn {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.5rem;
       border: none;
       background: transparent;
+
+      .material-symbols-outlined {
+        font-size: 1.5rem;
+
+        @include media-breakpoint-up(lg) {
+          font-size: 3rem;
+        }
+      }
+    }
+  }
+
+  .cart-scroll-area {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+
+    @include media-breakpoint-up(lg) {
+      padding: 0 3rem 1.5rem 3rem;
     }
   }
 
   // 商品圖片
   .cart-item-imgs {
-    max-height: 105px;
+    max-height: 112px;
     aspect-ratio: 1 / 1;
     overflow: hidden;
 
@@ -90,7 +122,6 @@
     gap: .5rem;
   }
   
-  // 商品項目
   .cart-item {
     min-height: 6rem;
     background-color: #f2f2f2;
@@ -151,6 +182,10 @@
   .cart-calculation {
     margin-top: 1.5rem;
 
+    @include media-breakpoint-up(lg) {
+      padding-left: 112px;
+    }
+
     .subtotal {
       display: flex;
       justify-content: space-between;
@@ -177,28 +212,42 @@
       font-size: 1.5rem;
       line-height: 1.5;
     }
+
+    .desktop-view {
+      display: none;
+
+      @include media-breakpoint-up(lg) {
+        display: block;
+        margin-top: 1.5rem;
+      }
+    }
   }
 
-  // 結帳按鈕
   .cart-fixed-bottom {
     width: 100%;
     padding: 0 1rem 1rem 1rem;
 
-    .checkout-btn {
-      width: 100%;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: bold;
-      line-height: 1.5;
-      background-color: #0e8a00; // 你截圖中的深綠色
-      border: none;
-      border-radius: .25rem;
-      text-transform: capitalize; 
-      padding: 1rem;
-      
-      &:hover {
-        background-color: darken(#0e8a00, 5%);
+    &.mobile-view {
+      @include media-breakpoint-up(lg) {
+        display: none;
       }
+    }
+  }
+
+  .checkout-btn {
+    width: 100%;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.5;
+    background-color: #0e8a00;
+    border: none;
+    border-radius: .25rem;
+    text-transform: capitalize; 
+    padding: 1rem;
+    
+    &:hover {
+      background-color: darken(#0e8a00, 5%);
     }
   }
 }

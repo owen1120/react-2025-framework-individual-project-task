@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import CartOffcanvas from './CartOffcanvas';
 import footer from '../assets/footer.jpg';
@@ -7,6 +7,8 @@ function Layout({ children, cart, removeFromCart, updateCartQty }) {
   const [showCart, setShowCart] = useState(false);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const closeButtonRef = useRef(null);
 
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -25,13 +27,19 @@ function Layout({ children, cart, removeFromCart, updateCartQty }) {
   // 開啟購物車的函式
   const handleShowCart = () => setShowCart(true);
 
+  const handleMobileLinkClick = () => {
+    setIsDropdownOpen(false);
+    if (closeButtonRef.current) {
+      closeButtonRef.current.click();
+    }
+  }
+
   const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
 
   return (
     <div className="d-flex flex-column min-vh-100">
       
       {/* --- Header 區域 --- */}
-      {/* <nav className="header navbar navbar-expand-lg navbar-light position-absolute w-100 top-0 z-3"> */}
       <nav 
         className={`header navbar navbar-expand-lg position-absolute w-100 top-0 z-3 
           ${isHomePage 
@@ -64,7 +72,7 @@ function Layout({ children, cart, removeFromCart, updateCartQty }) {
           <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             
             <div className="offcanvas-header">
-              <button type="button" className="btn btn-return" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasNavbar" aria-label="Close">
+              <button type="button" className="btn btn-return" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasNavbar" aria-label="Close" ref={closeButtonRef}>
                 <span className="material-symbols-outlined">arrow_back</span>
               </button>
               
@@ -99,13 +107,13 @@ function Layout({ children, cart, removeFromCart, updateCartQty }) {
                   <ul 
                     className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`} 
                     data-bs-popper="none"
-                    style={{ display: isDropdownOpen ? 'block' : 'none' }}
+                    style={{ display: isDropdownOpen ? 'flex' : 'none' }}
                   >
-                    <li><Link to="/products" className="dropdown-item">All<small className='qty'>24</small></Link></li>
-                    <li><Link to="/products" className="dropdown-item">Bowl<small className='qty'>10</small></Link></li>
-                    <li><Link to="/products" className="dropdown-item">Cup<small className='qty'>8</small></Link></li>
-                    <li><Link to="/products" className="dropdown-item">Plate<small className='qty'>3</small></Link></li>
-                    <li><a href="#" className="dropdown-item">Vase<small className='qty'>3</small></a></li>
+                    <li><Link to="/products?category=All" className="dropdown-item" onClick={handleMobileLinkClick}>All<small className='qty'>24</small></Link></li>
+                    <li><Link to="/products?category=Bowl" className="dropdown-item" onClick={handleMobileLinkClick}>Bowl<small className='qty'>10</small></Link></li>
+                    <li><Link to="/products?category=Cup" className="dropdown-item" onClick={handleMobileLinkClick}>Cup<small className='qty'>8</small></Link></li>
+                    <li><Link to="/products?category=Plate" className="dropdown-item" onClick={handleMobileLinkClick}>Plate<small className='qty'>3</small></Link></li>
+                    <li><Link to="/products?category=Vase" className="dropdown-item" onClick={handleMobileLinkClick}>Vase<small className='qty'>3</small></Link></li>
                   </ul>
                 </li>
 

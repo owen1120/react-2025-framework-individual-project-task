@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Masonry from 'react-masonry-css';
 import ProductCard from '../components/ProductCard';
@@ -6,7 +7,10 @@ import ProductCard from '../components/ProductCard';
 function ProductPage({ addToCart }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filterType, setFilterType] = useState('All');
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const filterType = searchParams.get('category') || 'All';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
@@ -67,7 +71,12 @@ function ProductPage({ addToCart }) {
   }, [products, filterType]);
 
   const handleFilterChange = (category) => {
-    setFilterType(category);
+    if (category === 'All') {
+      setSearchParams({});
+    } else {
+      setSearchParams({ category });
+    }
+
     setCurrentPage(1);
   };
 

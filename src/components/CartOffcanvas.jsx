@@ -36,7 +36,7 @@ function CartOffcanvas({ show, handleClose, cart, removeFromCart, updateCartQty 
           ) : (
             <>
               {/* 滾動區域 (包含商品列表 + 金額明細) */}
-              <div className="cart-scroll-area flex-grow-1 overflow-auto px-4 pb-4">
+              <div className="cart-scroll-area flex-grow-1 overflow-auto">
                 
                 {/* 商品列表 */}
                 <div className="cart-list">
@@ -110,12 +110,17 @@ function CartOffcanvas({ show, handleClose, cart, removeFromCart, updateCartQty 
                     <span className="h4 fw-bold mb-0">Total</span>
                     <span className="h4 fw-bold mb-0">NT${total.toLocaleString()}</span>
                   </div>
+                  <div className="cart-checkout-btn desktop-view">
+                    <button className="btn checkout-btn">
+                      Checkout
+                    </button>
+                  </div>
                 </div>
 
               </div>
 
               {/* 結帳按鈕 */}
-              <div className="cart-fixed-bottom">
+              <div className="cart-fixed-bottom mobile-view">
                 <button className="btn checkout-btn">
                   Checkout
                 </button>

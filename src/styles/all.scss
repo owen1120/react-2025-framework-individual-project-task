@@ -1,7 +1,17 @@
 @import 'bootstrap/scss/bootstrap';
-// @import '_reset.scss';
+@import './variables';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import './layout/header';
+@import './layout/footer';
+
+@import './components/product-card';
+@import './components/cart-offcanvas';
+@import './components/pagination';
+
+@import './pages/homepage';
+@import './pages/product';
 
 * {
     font-family: 'Roboto', sans-serif;
@@ -19,13 +29,3 @@
 .icon-fill {
   font-variation-settings: 'FILL' 1;
 }
-
-@import './layout/header';
-@import './layout/footer';
-
-@import './components/product-card';
-@import './components/cart-offcanvas';
-@import './components/pagination';
-
-@import './pages/homepage';
-@import './pages/product';
