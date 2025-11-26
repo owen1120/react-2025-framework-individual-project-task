@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import heroBanner from "../assets/index-1.jpg";
 import feature1 from "../assets/index-2.jpg";
@@ -6,7 +8,22 @@ import feature2 from "../assets/index-3.jpg";
 import feature3 from "../assets/index-4.jpg";
 import director from "../assets/index-5.jpg";
 
-function HomePage() {
+function HomePage({ addToCart }) {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await axios.get('https://raw.githubusercontent.com/hexschool/js-training/refs/heads/main/craftsman.json');
+        const allProducts = res.data.products || [];
+        setFeaturedProducts(allProducts.slice(0, 8));
+      } catch (error) {
+        console.error('首頁資料讀取失敗', error);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
   return (
     <div className="homepage">
       {/* banner區域 */}
@@ -81,21 +98,39 @@ function HomePage() {
 
       <section className="products container">
         <ul className="cards-group">
-          <li className="cards">
-            <a href="#" className="card-item">
-              <div className="card-imgs">
-                <img src="https://github.com/hexschool/webLayoutTraining1st/blob/master/week6/img-1.jpg?raw=true" alt="Tatami Cup" className="card-img" />
-                <span className="tag">On Sale</span>
-              </div>
-              <div className="card-content">
-                <h4 className="name">Tatami Cup</h4>
-                <div className="prices">
-                  <p className="price">NT$1080</p>
-                  <p className="originPrice">NT$1200</p>
-                </div>
-              </div>
-            </a>
-          </li>
+          {featuredProducts.length === 0 ? (
+            <p className="text-center w-100 text-muted py-5">Loading...</p>
+          ) : (
+            featuredProducts.map((product) => (
+              <li className="cards" key={product.id}>
+                <a 
+                href="#" 
+                className="card-item"
+                onClick={(e) => {
+                  e.preventDefault();
+                  addToCart(product);
+                }}
+                >
+                  <div className="card-imgs">
+                    <img src={product.image} alt={product.name} className="card-img" />
+                    {product.origin_price > product.price && (
+                      <span className="tag">On Sale</span>
+                    )}
+                  </div>
+                  <div className="card-content">
+                    <h4 className="name">{product.name}</h4>
+                    <div className="prices">
+                      <p className="price">NT${product.price.toLocaleString()}</p>
+                      {product.origin_price > product.price && (
+                        <p className="originPrice">NT${product.origin_price.toLocaleString()}</p>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              </li>
+            ))
+          )}
+          
           <li className="cards">
             <a href="#" className="card-item">
               <div className="card-imgs">
